@@ -136,3 +136,30 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Use Amazon S3 for storage for uploaded media files if not debugging
+if os.environ.get("S3_BUCKET"):
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": os.environ.get("S3_BUCKET"),
+                "region_name": os.environ.get("S3_REGION", "ap-northeast-2"),
+                "custom_domain": os.environ.get("S3_CUSTOM_DOMAIN"),
+                "location": "media",
+                "default_acl": "public-read",
+                "querystring_auth": False,
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": os.environ.get("S3_BUCKET"),
+                "region_name": os.environ.get("S3_REGION", "ap-northeast-2"),
+                "custom_domain": os.environ.get("S3_CUSTOM_DOMAIN"),
+                "location": "static",
+                "default_acl": "public-read",
+                "querystring_auth": False,
+            },
+        },
+    }
