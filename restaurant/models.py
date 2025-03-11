@@ -31,6 +31,7 @@ class Restaurant(models.Model):
         max_digits=16, decimal_places=12, db_index=True, default="0.0000"
     )
     phone = models.CharField(max_length=16, help_text="E.164 포맷으로")
+    description = models.CharField(max_length=255, null=True, blank=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
     rating_count = models.PositiveIntegerField(default=0)
     start_time = models.TimeField(null=True, blank=True)
